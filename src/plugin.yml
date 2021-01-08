@@ -1,0 +1,9 @@
+name: Animator
+version: 1.0
+author: Brad Bouquio
+main: Animator
+api-version: 1.16
+commands:
+  ani:
+    description: Base command for Animator
+    usage: Type /ani [schem] [world] to paste a schem
