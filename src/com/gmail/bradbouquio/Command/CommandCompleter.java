@@ -1,3 +1,5 @@
+package com.gmail.bradbouquio.Command;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;

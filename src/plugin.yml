@@ -1,9 +1,9 @@
-name: Animator
+name: com.gmail.bradbouquio.Animator
 version: 1.0
 author: Brad Bouquio
-main: Animator
+main: com.gmail.bradbouquio.Animator
 api-version: 1.16
 commands:
   ani:
-    description: Base command for Animator
+    description: Base command for com.gmail.bradbouquio.Animator
     usage: Type /ani [schem] [world] to paste a schem
