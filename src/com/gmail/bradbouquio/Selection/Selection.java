@@ -30,6 +30,11 @@ public class Selection {
     public Location getOne(){ return one; }
     public Location getTwo(){ return two; }
 
+    public int getVolume(){
+        if(vol != null) return vol.getVolume();
+        else return 0;
+    }
+
     public boolean worldsMatch(){
         String name1 = worldOne.getName();
         String name2 = worldTwo.getName();
@@ -54,5 +59,10 @@ public class Selection {
             }
         }
         return selectionBlocks;
+    }
+
+    public boolean pointsMatch() {
+        if(one.equals(two)) return true;
+        else return false;
     }
 }

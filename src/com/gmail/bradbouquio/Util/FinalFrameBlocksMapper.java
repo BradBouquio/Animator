@@ -19,15 +19,15 @@ public class FinalFrameBlocksMapper {
 
     public static Map<String, String> lastFramedBlockMaterials(YamlConfiguration yml, World world, Integer indexOfFinalFrame){
         int initialFrameSize = 100;
-        if(yml.getConfigurationSection(String.valueOf(0)) != null) initialFrameSize = yml.getConfigurationSection(String.valueOf(0)).getKeys(false).size();
+        if(yml.getConfigurationSection("frames." + 0) != null) return new HashMap<>(0);
         Map<String, String> lastFramedBlockMaterials = new HashMap<>(initialFrameSize);
 
 
         for(int i = indexOfFinalFrame; i >= 0; i--){
-            int numBlocksOfFrame = yml.getConfigurationSection(String.valueOf(i)).getKeys(false).size();
+            int numBlocksOfFrame = yml.getConfigurationSection("frames." + i).getKeys(false).size();
             for(int j = 0; j < numBlocksOfFrame; j++){
-                String coords = yml.getString(i + "." + j + ".coords");
-                String material = yml.getString(i + "." + j + ".Material");
+                String coords = yml.getString("frames." + i + "." + j + ".coords");
+                String material = yml.getString("frames." + i + "." + j + ".Material");
                 lastFramedBlockMaterials.putIfAbsent(coords, material);
             }
         }

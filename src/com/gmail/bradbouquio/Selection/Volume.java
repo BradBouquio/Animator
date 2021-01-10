@@ -20,9 +20,9 @@ public class Volume {
         minZ = Math.min(one.getBlockZ(), two.getBlockZ());
         maxZ = Math.max(one.getBlockZ(), two.getBlockZ());
 
-        length = maxX-minX;
-        width = maxZ-minZ;
-        height = maxY-minY;
+        length = maxX-minX+1;
+        width = maxZ-minZ+1;
+        height = maxY-minY+1;
 
         volume = length*width*height;
     }
@@ -38,5 +38,5 @@ public class Volume {
     public int getLength() { return length; }
     public int getWidth() { return width; }
     public int getHeight() { return height; }
-    public int getVolume() { return volume; }
+    int getVolume() { return volume; }
 }

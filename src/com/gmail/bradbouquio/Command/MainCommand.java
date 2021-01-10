@@ -47,7 +47,7 @@ public class MainCommand implements CommandExecutor {
                 } else animationName = subcommand[2];
 
                 Selection playerSelection = Selections.get(player.getDisplayName());
-                if(playerSelection == null) player.sendMessage("You need to make a selection first");
+                if(playerSelection == null) player.sendMessage("Use your wand to create a selection first! /ani wand");
                 Animation animation = Animations.getAnimation(player.getDisplayName(), animationName);
 
                 final ExecutorService service = Executors.newFixedThreadPool(4);
@@ -55,7 +55,9 @@ public class MainCommand implements CommandExecutor {
                     try {
                         animation.createNextFrame(playerSelection);
                     } catch (WorldMismatchException e) {
-                        e.printStackTrace();
+                        player.sendMessage(e.getMessage());
+                    } catch (Throwable t){
+                        t.printStackTrace();
                     }
                 };
 
@@ -88,6 +90,17 @@ public class MainCommand implements CommandExecutor {
 //            return false;
         }
 
+        if(subcommand[0].equals("edit")){
+            if("origin".equals(subcommand[1])) {
+                if(subcommand.length > 2){
+                    Selection playerSelection = Selections.get(player.getDisplayName());
+                    if(playerSelection == null) player.sendMessage("Use your wand to create a selection first! /ani wand");
+                    Animation animation = Animations.getAnimation(((Player) commandSender).getDisplayName(), subcommand[2]);
+                    animation.editOrigin(playerSelection);
+                } else player.sendMessage("Command Usage: /ani edit origin [animationName]");
+                return true;
+            } else return false;
+        }
 
         if(subcommand[0].equals("compress")){
             if(subcommand[1] != null) {

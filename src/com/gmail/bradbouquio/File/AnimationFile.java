@@ -38,6 +38,8 @@ public class AnimationFile {
         }
         animationFile.saveFile = new File(animationFile.pathString);
         animationFile.yml = YamlConfiguration.loadConfiguration(animationFile.saveFile);
+        animationFile.yml.createSection("frames");
+        animationFile.save();
         return animationFile;
     }
 
@@ -51,14 +53,13 @@ public class AnimationFile {
     }
 
     public void saveFrameToFile(Map<String, String> blocksToPutInFrame) {
-        int section = yml.getKeys(false) == null ? 0 : yml.getKeys(false).size();
-        yml.createSection(Integer.toString(section));
-        indexToWrite = yml.getConfigurationSection(section + "").getKeys(false).size();
-
+        int section = yml.getConfigurationSection("frames").getKeys(false) == null ? 0 : yml.getConfigurationSection("frames").getKeys(false).size();
+        yml.createSection("frames." + section);
+        indexToWrite = yml.getConfigurationSection("frames." + section).getKeys(false).size();
         BiConsumer saveMapValuesToFile = (k, v) -> {
-            yml.createSection(section + "." + indexToWrite);
-            yml.addDefault(section + "." + indexToWrite + ".Material", v);
-            yml.addDefault(section + "." + indexToWrite + ".coords", k);
+            yml.createSection("frames." + section + "." + indexToWrite);
+            yml.addDefault("frames." + section + "." + indexToWrite + ".Material", v);
+            yml.addDefault("frames." + section + "." + indexToWrite + ".coords", k);
             indexToWrite++;
         };
 
@@ -68,5 +69,12 @@ public class AnimationFile {
 
     public YamlConfiguration getYml(){
         return yml;
+    }
+
+    public void editOrigin(String origin) {
+        if(yml.getString("origin") != null){
+            yml.addDefault("origin", origin);
+            save();
+        }
     }
 }

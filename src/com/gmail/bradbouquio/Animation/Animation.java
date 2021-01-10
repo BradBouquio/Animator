@@ -36,7 +36,8 @@ public class Animation {
     }
 
     public void createNextFrame(Selection selection) throws WorldMismatchException {
-        indexOfFinalFrame = animationFile.getYml().getKeys(false).size()-1;
+        if(animationFile.getYml().getConfigurationSection("frames") == null) indexOfFinalFrame = 0;
+        else indexOfFinalFrame = animationFile.getYml().getConfigurationSection("frames").getKeys(false).size()-1;
         Map<String, String> selectionBlocks = selection.getSelectionBlocks();
         Map<String, String> finalFrameBlocks = FinalFrameBlocksMapper.lastFramedBlockMaterials(animationFile.getYml(), selection.getWorld(), indexOfFinalFrame);
         Map<String, String> changedOrMissingBlocks = CompareBlockMaps.compare(selectionBlocks,finalFrameBlocks);
@@ -44,7 +45,7 @@ public class Animation {
     }
 
     public void playAnimation(int ticksBetweenFrames, boolean loop) {
-        int framesToPlay = animationFile.getYml().getKeys(false).size();
+        int framesToPlay = animationFile.getYml().getConfigurationSection("frames").getKeys(false).size();
         BukkitRunnable bukkitTask = new BukkitRunnable() {
             @Override
             public void run() {
@@ -62,13 +63,13 @@ public class Animation {
     private void runFrame(String frame) {
         playedFrame = Integer.valueOf(frame) + 1;
         YamlConfiguration yml = animationFile.getYml();
-        if(yml.getConfigurationSection(frame) == null) return;
-        Set<String> changeKeys = yml.getConfigurationSection(frame).getKeys(false);
+        if(yml.getConfigurationSection("frames." + frame) == null) return;
+        Set<String> changeKeys = yml.getConfigurationSection("frames." + frame).getKeys(false);
         for(String blockChange : changeKeys){
-            String[] coords = yml.getString(frame + "." + blockChange + ".coords").split(",");
+            String[] coords = yml.getString("frames." + frame + "." + blockChange + ".coords").split(",");
             World world = Bukkit.getWorld("arena");
             Location loc = new Location(world,Double.valueOf(coords[0]),Double.valueOf(coords[1]),Double.valueOf(coords[2]));
-            world.getBlockAt(loc).setType(Material.getMaterial(yml.getString(frame + "." + blockChange + ".Material")));
+            world.getBlockAt(loc).setType(Material.getMaterial(yml.getString("frames." + frame + "." + blockChange + ".Material")));
         }
     }
 
@@ -76,4 +77,8 @@ public class Animation {
         Compression.compress(animationFile);
     }
 
+    public void editOrigin(Selection selection) {
+        if(selection.pointsMatch()) animationFile.editOrigin(selection.getOne().getBlockX() + "," + selection.getOne().getBlockY() + "," + selection.getOne().getBlockZ());
+        else Bukkit.getPlayer(playerName).sendMessage("Selection points must match to set origin");
+    }
 }

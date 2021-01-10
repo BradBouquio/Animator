@@ -27,7 +27,7 @@ public class PlayerInteractListener implements Listener {
             if(sel==null) sel = new Selection();
             sel.setOne(hitBlock.getLocation());
             Selections.put(player.getDisplayName(), sel);
-            player.sendMessage("First position set to " + formatLocationCoords(hitBlock.getLocation()));
+            player.sendMessage("First position set to " + formatLocationCoords(hitBlock.getLocation()) + " - Volume: " + sel.getVolume());
         }
 
         if(hitEvent.getAction() == Action.RIGHT_CLICK_BLOCK){
@@ -35,7 +35,7 @@ public class PlayerInteractListener implements Listener {
             if(sel==null) sel = new Selection();
             sel.setTwo(hitBlock.getLocation());
             Selections.put(player.getDisplayName(), sel);
-            player.sendMessage("Second position set to " + formatLocationCoords(hitBlock.getLocation()));
+            player.sendMessage("Second position set to " + formatLocationCoords(hitBlock.getLocation()) + " - Volume: " + sel.getVolume());
         }
 
     }
